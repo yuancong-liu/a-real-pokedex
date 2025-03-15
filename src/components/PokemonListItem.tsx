@@ -11,6 +11,10 @@ export const PokemonListItem = ({ pokemonName }: PokemonListItemProps) => {
     queryFn: () => getPokemon(pokemonName),
   });
 
+  if (!pokemon) {
+    return <li>{pokemonName}</li>;
+  }
+
   return (
     <li>
       {pokemonName}

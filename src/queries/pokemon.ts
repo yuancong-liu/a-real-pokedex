@@ -1,9 +1,9 @@
 import { axiosInstance } from "../utils/axios";
 import type { PokeAPI } from "pokeapi-types";
 
-export const getPokemon = async (id: number) => {
+export const getPokemon = async (name: string) => {
   return await axiosInstance
-    .get<PokeAPI.Pokemon>(`/pokemon/${id}`)
+    .get<PokeAPI.Pokemon>(`/pokemon/${name}`)
     .then((res) => res.data);
 };
 
