@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PokemonList } from "@/components/PokemonList";
+import { PokemonList } from "@/components/featured/PokemonList";
 
 const Index = () => {
   return (

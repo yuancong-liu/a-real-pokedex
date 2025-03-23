@@ -1,12 +1,13 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@import 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap';
 
-@custom-variant dark (&:where(.dark, .dark *));
+/* stylelint-disable-next-line scss/at-rule-no-unknown */
+@custom-variant dark (&:where(.dark, .dark * ));
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-
+  font-family: 'JetBrains Mono', monospace;
   font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

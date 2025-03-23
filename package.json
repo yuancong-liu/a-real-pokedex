@@ -15,9 +15,14 @@
     "@tanstack/react-query": "^5.67.1",
     "@tanstack/react-router": "^1.114.17",
     "axios": "^1.8.2",
+    "clsx": "^2.1.1",
     "motion": "^12.4.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "sass": "^1.86.0",
+    "stylelint": "^16.16.0",
+    "stylelint-config-standard-scss": "^14.0.0",
+    "stylelint-order": "^6.0.4",
     "tailwindcss": "^4.0.6"
   },
   "devDependencies": {
@@ -30,6 +35,7 @@
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "eslint": "^9.19.0",
+    "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",

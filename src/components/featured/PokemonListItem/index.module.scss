@@ -1,0 +1,12 @@
+.pokemon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+}
+
+.pokemon-id {
+  font-weight: 700;
+}

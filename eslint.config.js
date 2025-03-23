@@ -4,11 +4,36 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 import pluginQuery from '@tanstack/eslint-plugin-query'
+import importPlugin from 'eslint-plugin-import'
 
 export default tseslint.config(
   { ignores: ['dist'] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    extends: [js.configs.recommended, importPlugin.flatConfigs.recommended, {
+      files: ['**/*.{js,mjs,cjs}'],
+      languageOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
+      rules: {
+        'no-unused-vars': 'off',
+        'import/no-dynamic-require': 'warn',
+        'import/no-nodejs-modules': 'warn',
+        "import/order": ["error", {
+          "groups": [
+            // Imports of builtins are first
+            "builtin",
+            // Then sibling and parent imports. They can be mingled together
+            ["sibling", "parent"],
+            // Then index file imports
+            "index",
+            // Then any arcane TypeScript imports
+            "object",
+            // Then the omitted imports: internal, external, type, unknown
+          ],
+        }],
+      },
+    }, , ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
