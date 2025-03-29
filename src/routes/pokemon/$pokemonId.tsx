@@ -1,52 +1,74 @@
 import { Image } from '@/components/common/image';
-import {
-  getPokemon,
-  getPokemonEvolutionChain,
-  getPokemonSpecies,
-} from '@/queries/pokemon';
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
+import { EvoChain } from '@/components/featured/EvoChain';
+import { getPokemonSpecies, getTargetResponse } from '@/queries/pokemon';
 import { useQuery } from '@tanstack/react-query';
-import { Link, createFileRoute, getRouteApi } from '@tanstack/react-router';
+import { createFileRoute, getRouteApi } from '@tanstack/react-router';
 import { PokeAPI } from 'pokeapi-types';
+import { Forms } from '@/components/featured/forms/forms';
 
 const route = getRouteApi('/pokemon/$pokemonId');
 
 const PokemonDetail = () => {
-  const { name, id, sprites, species } = route.useLoaderData();
+  const { name, id, evolution_chain, varieties } = route.useLoaderData();
+
   const { data: evoChain } = useQuery({
-    queryKey: ['evolutionChain', species.name],
+    queryKey: ['evolutionChain', evolution_chain.url],
     queryFn: () =>
-      getPokemonSpecies(species.name).then((speciesData) => {
-        const evoChainId = speciesData.evolution_chain.url.split('/').at(-2);
-        return getPokemonEvolutionChain(evoChainId);
+      getTargetResponse<PokeAPI.EvolutionChain>({
+        path: evolution_chain.url,
       }),
   });
 
-  // const { data: evoChain } = useQuery({
-  //   queryKey: ['evolutionChain', speciesData?.id],
-  //   queryFn: () => getPokemonEvolutionChain(speciesData?.id),
-  // });
+  const { data: pokemons } = useQuery({
+    queryKey: ['pokemonVarieties', name],
+    queryFn: () => {
+      const promises = varieties.map(
+        async (variety) =>
+          await getTargetResponse<PokeAPI.Pokemon>({
+            path: variety.pokemon.url,
+          }),
+      );
+      return Promise.all(promises);
+    },
+  });
 
   return (
     <div>
       <section>
+        #{id}
         {name}
-        {id}
-        <Image width={96} height={96} src={sprites.front_default} alt={name} />
+        {pokemons && (
+          <TabGroup className="flex flex-col gap-2 overflow-scroll">
+            <TabList className="flex gap-2">
+              {pokemons.map((p) => (
+                <Tab>{p.name}</Tab>
+              ))}
+            </TabList>
+            <TabPanels>
+              {pokemons.map((p) => (
+                <TabPanel key={p.name} className="flex flex-col items-center">
+                  <Image
+                    src={p.sprites.front_default}
+                    alt={p.name}
+                    width={96}
+                    height={96}
+                  />
+                  <div className="flex w-full gap-2 overflow-scroll">
+                    {p.forms.map((form) => (
+                      <Forms key={form.url} formUrl={form.url} />
+                    ))}
+                  </div>
+                </TabPanel>
+              ))}
+            </TabPanels>
+          </TabGroup>
+        )}
       </section>
-      {evoChain && (
+      {!!evoChain?.chain.evolves_to.length && (
         <section>
           <h2>Evolution Chain</h2>
-          <ul>
-            {evoChain.chain.evolves_to.map((evolution) => (
-              <Link
-                to="/pokemon/$pokemonId"
-                params={{ pokemonId: evolution.species.name }}
-                key={evolution.species.name}
-              >
-                {evolution.species.name}
-              </Link>
-            ))}
-          </ul>
+          <EvoChain evoChain={evoChain.chain} />
         </section>
       )}
     </div>
@@ -55,8 +77,8 @@ const PokemonDetail = () => {
 
 export const Route = createFileRoute('/pokemon/$pokemonId')({
   component: PokemonDetail,
-  loader: async ({ params }): Promise<PokeAPI.Pokemon> => {
+  loader: async ({ params }): Promise<PokeAPI.PokemonSpecies> => {
     const { pokemonId } = params;
-    return getPokemon(pokemonId);
+    return getPokemonSpecies(pokemonId);
   },
 });

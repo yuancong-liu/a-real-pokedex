@@ -1,11 +1,11 @@
+@import 'https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap';
 @import 'tailwindcss';
-@import 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap';
 
 /* stylelint-disable-next-line scss/at-rule-no-unknown */
 @custom-variant dark (&:where(.dark, .dark * ));
 
 :root {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Fira Code', monospace;
   font-synthesis: none;
   text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;

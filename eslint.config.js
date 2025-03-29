@@ -16,9 +16,11 @@ export default tseslint.config(
         sourceType: 'module',
       },
       rules: {
+        "no-unresolved": "off",
         'no-unused-vars': 'off',
         'import/no-dynamic-require': 'warn',
         'import/no-nodejs-modules': 'warn',
+        "import/no-unresolved": "off",
         "import/order": ["error", {
           "groups": [
             // Imports of builtins are first
@@ -31,6 +33,7 @@ export default tseslint.config(
             "object",
             // Then the omitted imports: internal, external, type, unknown
           ],
+          "newlines-between": "always",
         }],
       },
     }, , ...tseslint.configs.recommended],

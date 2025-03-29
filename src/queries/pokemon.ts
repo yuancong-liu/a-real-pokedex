@@ -1,24 +1,30 @@
 import { axiosInstance } from '@/utils/axios';
+import type { AxiosRequestConfig } from 'axios';
 import type { PokeAPI } from 'pokeapi-types';
 
-export const getPokemon = async (name: string) => {
-  return await axiosInstance
-    .get<PokeAPI.Pokemon>(`/pokemon/${name}`)
-    .then((res) => res.data);
+type TargetResponseOptions = {
+  path: string;
+  params?: AxiosRequestConfig['params'];
 };
 
-export const getPokemonList = async (offset: number) => {
-  return await axiosInstance
-    .get<{
-      results: { name: string; url: string }[];
-    }>(`/pokemon`, {
-      params: {
-        limit: 50,
-        offset,
-      },
-    })
-    .then((res) => res.data);
+export const getTargetResponse = async <T>({
+  path,
+  params,
+}: TargetResponseOptions) => {
+  return await axiosInstance.get<T>(path, { params }).then((res) => res.data);
 };
+
+export const getPokemon = (name: string) =>
+  getTargetResponse<PokeAPI.Pokemon>({ path: `/pokemon/${name}` });
+
+export const getPokemonList = (offset: number) =>
+  getTargetResponse<{ results: { name: string; url: string }[] }>({
+    path: `/pokemon-species`,
+    params: {
+      limit: 50,
+      offset,
+    },
+  });
 
 export const getPokemonSpecies = async (name: string) => {
   return await axiosInstance

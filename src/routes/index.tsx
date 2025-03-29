@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { PokemonList } from "@/components/featured/PokemonList";
+import { createFileRoute } from '@tanstack/react-router';
+import { PokemonList } from '@/components/featured/PokemonList';
 
 const Index = () => {
   return (
@@ -9,6 +9,6 @@ const Index = () => {
   );
 };
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   component: Index,
 });

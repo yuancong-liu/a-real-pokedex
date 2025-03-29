@@ -1,5 +1,6 @@
 import styles from './index.module.scss';
 import { PokemonListItem } from '../PokemonListItem';
+
 import { getPokemonList } from '@/queries/pokemon';
 import { useQuery } from '@tanstack/react-query';
 import { memo, useState } from 'react';

@@ -1,9 +1,11 @@
-import axios from "axios";
+import { BASE_URL } from './getPokeApiPathname';
+
+import axios from 'axios';
 
 export const axiosInstance = axios.create({
-  baseURL: "https://pokeapi.co/api/v2",
+  baseURL: BASE_URL,
   timeout: 1000,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
