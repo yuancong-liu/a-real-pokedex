@@ -19,7 +19,7 @@ export const getPokemon = (name: string) =>
   getTargetResponse<PokeAPI.Pokemon>({ path: `/pokemon/${name}` });
 
 export const getPokemonList = (offset: number) =>
-  getTargetResponse<{ results: { name: string; url: string }[] }>({
+  getTargetResponse<PokeAPI.NamedAPIResourceList>({
     path: `/pokemon-species`,
     params: {
       limit: ITEM_COUNT_PER_PAGE,

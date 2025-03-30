@@ -1,5 +1,6 @@
 import { Image } from '@/components/common/image';
 import { getTargetResponse } from '@/queries/pokemon';
+import { getPokemonFormName } from '@/utils/getPokemonNameArray';
 import { useQuery } from '@tanstack/react-query';
 import { PokeAPI } from 'pokeapi-types';
 
@@ -18,7 +19,7 @@ export const Forms = ({ formUrl }: FormsProps) => {
 
   return (
     <div className="flex flex-col justify-between">
-      <span>{data?.name}</span>
+      <span>{getPokemonFormName(data?.names)}</span>
       <Image
         width={96}
         height={96}

@@ -3,13 +3,11 @@ import { PokemonList } from '@/components/featured/PokemonList';
 import { getPokemonList } from '@/queries/pokemon';
 import { ITEM_COUNT_PER_PAGE } from '@/utils/consts';
 
-const Index = () => {
-  return (
-    <div className="p-2">
-      <PokemonList />
-    </div>
-  );
-};
+const Index = () => (
+  <div className="p-2">
+    <PokemonList />
+  </div>
+);
 
 type ListSearchParams = {
   page: number;

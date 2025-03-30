@@ -2,19 +2,21 @@ import styles from './index.module.scss';
 import { PokemonListItem } from '../PokemonListItem';
 
 import { Link, getRouteApi } from '@tanstack/react-router';
+// import { ITEM_COUNT_PER_PAGE } from '@/utils/consts';
 
 const route = getRouteApi('/');
 
 export const PokemonList = () => {
-  const { results } = route.useLoaderData();
+  const { results, previous, next } = route.useLoaderData();
+  const { page } = route.useSearch();
 
   return (
     <>
       <div className="flex justify-between">
-        <Link to="." search={(prev) => ({ page: (prev.page ?? 1) - 1 })}>
+        <Link to="." search={{ page: page - 1 }} disabled={!previous}>
           Prev Page
         </Link>
-        <Link to="." search={(prev) => ({ page: (prev.page ?? 1) + 1 })}>
+        <Link to="." search={{ page: page + 1 }} disabled={!next}>
           Next Page
         </Link>
       </div>
