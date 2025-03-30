@@ -2,6 +2,7 @@ import { getTargetResponse } from '@/queries/pokemon';
 import { useQuery } from '@tanstack/react-query';
 import { PokeAPI } from 'pokeapi-types';
 import { Image } from '@/components/common/image';
+import { Link } from '@tanstack/react-router';
 
 type EvoChainProps = {
   evoChain: PokeAPI.ChainLink;
@@ -28,7 +29,11 @@ export const EvoChain = ({ evoChain }: EvoChainProps) => {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="flex flex-col items-center">
+      <Link
+        to="/pokemon/$pokemonId"
+        params={{ pokemonId: evoChain.species.name }}
+        className="flex flex-col items-center"
+      >
         <Image
           width={96}
           height={96}
@@ -36,7 +41,7 @@ export const EvoChain = ({ evoChain }: EvoChainProps) => {
           alt={evoChain.species.name}
         />
         <span>{evoChain.species.name}</span>
-      </div>
+      </Link>
       {evoChain.evolves_to.length > 0 && (
         <div className="flex flex-col gap-2">
           {evoChain.evolves_to.map((evo) => (

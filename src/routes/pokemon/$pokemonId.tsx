@@ -42,22 +42,33 @@ const PokemonDetail = () => {
           <TabGroup className="flex flex-col gap-2 overflow-scroll">
             <TabList className="flex gap-2">
               {pokemons.map((p) => (
-                <Tab>{p.name}</Tab>
+                <Tab key={p.name}>{p.name}</Tab>
               ))}
             </TabList>
             <TabPanels>
               {pokemons.map((p) => (
                 <TabPanel key={p.name} className="flex flex-col items-center">
-                  <Image
-                    src={p.sprites.front_default}
-                    alt={p.name}
-                    width={96}
-                    height={96}
-                  />
+                  <div className="flex gap-2">
+                    <Image
+                      src={p.sprites.front_default}
+                      alt={p.name}
+                      width={96}
+                      height={96}
+                    />
+                    {p.sprites.front_shiny && (
+                      <Image
+                        src={p.sprites.front_shiny}
+                        alt={p.name}
+                        width={96}
+                        height={96}
+                      />
+                    )}
+                  </div>
                   <div className="flex w-full gap-2 overflow-scroll">
-                    {p.forms.map((form) => (
-                      <Forms key={form.url} formUrl={form.url} />
-                    ))}
+                    {p.forms.length > 1 &&
+                      p.forms.map((form) => (
+                        <Forms key={form.url} formUrl={form.url} />
+                      ))}
                   </div>
                 </TabPanel>
               ))}

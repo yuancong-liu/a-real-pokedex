@@ -1,4 +1,5 @@
 import { axiosInstance } from '@/utils/axios';
+import { ITEM_COUNT_PER_PAGE } from '@/utils/consts';
 import type { AxiosRequestConfig } from 'axios';
 import type { PokeAPI } from 'pokeapi-types';
 
@@ -21,7 +22,7 @@ export const getPokemonList = (offset: number) =>
   getTargetResponse<{ results: { name: string; url: string }[] }>({
     path: `/pokemon-species`,
     params: {
-      limit: 50,
+      limit: ITEM_COUNT_PER_PAGE,
       offset,
     },
   });
