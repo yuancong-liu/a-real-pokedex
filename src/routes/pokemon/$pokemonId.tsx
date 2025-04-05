@@ -1,4 +1,5 @@
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { Select } from '@headlessui/react';
 import { EvoChain } from '@/components/featured/EvoChain';
 import { getPokemonSpecies, getTargetResponse } from '@/queries/pokemon';
 import { useQuery } from '@tanstack/react-query';
@@ -7,11 +8,26 @@ import { PokeAPI } from 'pokeapi-types';
 import { Forms } from '@/components/featured/forms/forms';
 import { Image } from '@/components/common/image';
 import { getPokemonNameArray } from '@/utils/getPokemonNameArray';
+import { PokemonTypeIcon } from '@/components/featured/PokemonTypeIcon';
+import { PokemonType } from '@/types/pokemonType';
 
 const route = getRouteApi('/pokemon/$pokemonId');
 
 const PokemonDetail = () => {
   const { names, id, evolution_chain, varieties } = route.useLoaderData();
+  const [currentPokemon, setCurrentPokemon] = useState(
+    varieties.find((v) => v.is_default)?.pokemon.name,
+  );
+
+  useEffect(() => {
+    const defaultPokemonName = varieties.find((v) => v.is_default)?.pokemon
+      .name;
+    setCurrentPokemon(defaultPokemonName);
+  }, [varieties]);
+
+  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setCurrentPokemon(e.target.value);
+  };
 
   const { data: evoChain } = useQuery({
     queryKey: ['evolutionChain', evolution_chain.url],
@@ -34,47 +50,60 @@ const PokemonDetail = () => {
     },
   });
 
+  const currentPokemonData = pokemons?.find((p) => p.name === currentPokemon);
+
   return (
     <div>
-      <section>
-        #{id}
-        {getPokemonNameArray(names).join('/')}
-        {pokemons && (
-          <TabGroup className="flex flex-col gap-2 overflow-scroll">
-            <TabList className="flex gap-2">
-              {pokemons.map((p) => (
-                <Tab key={p.name}>{p.name}</Tab>
+      <section className="relative flex flex-col">
+        <span className="absolute -top-10 -left-10 -z-10 text-8xl font-semibold text-slate-300">
+          #{id}
+        </span>
+        <span>{getPokemonNameArray(names).join('/')}</span>
+        <Select
+          value={currentPokemon}
+          onChange={handleSelectChange}
+          disabled={varieties.length === 1}
+        >
+          {varieties.map((v) => (
+            <option value={v.pokemon.name} key={v.pokemon.name}>
+              {v.pokemon.name}
+            </option>
+          ))}
+        </Select>
+
+        {currentPokemonData && (
+          <>
+            <div className="flex justify-center gap-2">
+              <Image
+                src={currentPokemonData.sprites.front_default}
+                alt={currentPokemonData.name}
+                width={96}
+                height={96}
+              />
+              {currentPokemonData.sprites.front_shiny && (
+                <Image
+                  src={currentPokemonData.sprites.front_shiny}
+                  alt={currentPokemonData.name}
+                  width={96}
+                  height={96}
+                />
+              )}
+            </div>
+            <div className="flex justify-center gap-2">
+              {currentPokemonData.types.map((type) => (
+                <PokemonTypeIcon
+                  type={type.type.name as PokemonType}
+                  key={type.type.name}
+                />
               ))}
-            </TabList>
-            <TabPanels>
-              {pokemons.map((p) => (
-                <TabPanel key={p.name} className="flex flex-col items-center">
-                  <div className="flex gap-2">
-                    <Image
-                      src={p.sprites.front_default}
-                      alt={p.name}
-                      width={96}
-                      height={96}
-                    />
-                    {p.sprites.front_shiny && (
-                      <Image
-                        src={p.sprites.front_shiny}
-                        alt={p.name}
-                        width={96}
-                        height={96}
-                      />
-                    )}
-                  </div>
-                  <div className="flex w-full gap-2 overflow-scroll">
-                    {p.forms.length > 1 &&
-                      p.forms.map((form) => (
-                        <Forms key={form.url} formUrl={form.url} />
-                      ))}
-                  </div>
-                </TabPanel>
-              ))}
-            </TabPanels>
-          </TabGroup>
+            </div>
+            <div className="flex w-full gap-2 overflow-scroll">
+              {currentPokemonData.forms.length > 1 &&
+                currentPokemonData.forms.map((form) => (
+                  <Forms key={form.url} formUrl={form.url} />
+                ))}
+            </div>
+          </>
         )}
       </section>
       {!!evoChain?.chain.evolves_to.length && (

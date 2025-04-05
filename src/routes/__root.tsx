@@ -12,7 +12,7 @@ export const Route = createRootRoute({
         </Link>
       </div>
       <hr />
-      <main className="m-auto max-w-[50rem]">
+      <main className="m-auto max-w-[50rem] p-4">
         <Outlet />
       </main>
     </>

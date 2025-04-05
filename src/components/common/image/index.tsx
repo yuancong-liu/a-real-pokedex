@@ -5,13 +5,13 @@ import clsx from 'clsx';
 
 type ImageProps = ComponentProps<'img'>;
 
-export const Image = ({ ...props }: ImageProps) => {
+export const Image = ({ className, ...props }: ImageProps) => {
   const [loaded, setLoaded] = useState(false);
   const { width, height } = props;
 
   return (
     <div
-      className={styles['image-container']}
+      className={clsx(styles['image-container'], className)}
       style={
         width && height
           ? {

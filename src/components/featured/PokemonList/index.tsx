@@ -2,7 +2,6 @@ import styles from './index.module.scss';
 import { PokemonListItem } from '../PokemonListItem';
 
 import { Link, getRouteApi } from '@tanstack/react-router';
-// import { ITEM_COUNT_PER_PAGE } from '@/utils/consts';
 
 const route = getRouteApi('/');
 
