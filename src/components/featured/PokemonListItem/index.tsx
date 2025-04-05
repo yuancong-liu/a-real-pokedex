@@ -1,4 +1,3 @@
-import styles from './index.module.scss';
 import { useColor } from 'color-thief-react';
 
 import { Image } from '@/components/common/image';
