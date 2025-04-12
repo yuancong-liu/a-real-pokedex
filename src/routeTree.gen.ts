@@ -11,17 +11,10 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as PokemonPokemonIdImport } from './routes/pokemon/$pokemonId'
 
 // Create/Update Routes
-
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -46,13 +39,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
-      parentRoute: typeof rootRoute
-    }
     '/pokemon/$pokemonId': {
       id: '/pokemon/$pokemonId'
       path: '/pokemon/$pokemonId'
@@ -67,41 +53,36 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/pokemon/$pokemonId': typeof PokemonPokemonIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/pokemon/$pokemonId': typeof PokemonPokemonIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/pokemon/$pokemonId': typeof PokemonPokemonIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/pokemon/$pokemonId'
+  fullPaths: '/' | '/pokemon/$pokemonId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/pokemon/$pokemonId'
-  id: '__root__' | '/' | '/about' | '/pokemon/$pokemonId'
+  to: '/' | '/pokemon/$pokemonId'
+  id: '__root__' | '/' | '/pokemon/$pokemonId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
   PokemonPokemonIdRoute: typeof PokemonPokemonIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
   PokemonPokemonIdRoute: PokemonPokemonIdRoute,
 }
 
@@ -116,15 +97,11 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about",
         "/pokemon/$pokemonId"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/about": {
-      "filePath": "about.tsx"
     },
     "/pokemon/$pokemonId": {
       "filePath": "pokemon/$pokemonId.tsx"
