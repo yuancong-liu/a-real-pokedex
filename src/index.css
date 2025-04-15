@@ -1,11 +1,12 @@
 @import 'https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap';
+@import 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@100;200;300;400;500;600;700&display=swap';
 @import 'tailwindcss';
 
 /* stylelint-disable-next-line scss/at-rule-no-unknown */
 @custom-variant dark (&:where(.dark, .dark * ));
 
 :root {
-  font-family: 'Fira Code', monospace;
+  font-family: 'Fira Code', 'IBM Plex Sans JP', monospace;
   font-synthesis: none;
   text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;

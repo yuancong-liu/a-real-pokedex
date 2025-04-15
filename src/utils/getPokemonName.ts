@@ -7,5 +7,10 @@ export const getPokemonNameArray = (names: Array<PokeAPI.Name>) =>
     (lang) => names.find((name) => name.language.name === lang)?.name,
   );
 
+export const getPokemonName = (
+  names: Array<PokeAPI.Name>,
+  key: (typeof LANG_TO_CHECK)[number] = 'en',
+) => names.find((name) => name.language.name === key)?.name;
+
 export const getPokemonFormName = (names: Array<PokeAPI.Name> | undefined) =>
   names ? names.find((name) => name.language.name === 'en')?.name : 'No Name';

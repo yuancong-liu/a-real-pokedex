@@ -8,6 +8,8 @@ import { PokeAPI } from 'pokeapi-types';
 import { useEffect, useRef } from 'react';
 import { animate, createScope, createSpring, Scope, stagger } from 'animejs';
 import { ChevronRightIcon, ChevronLeftIcon, Loader2Icon } from 'lucide-react';
+import { ITEM_COUNT_PER_PAGE } from '@/utils/consts';
+import clsx from 'clsx';
 
 const route = getRouteApi('/');
 
@@ -70,12 +72,12 @@ export const PokemonList = () => {
     <>
       <Pagination />
       {isLoading && (
-        <div className="grid h-screen w-full place-items-center">
+        <div className="grid h-full w-full grow place-items-center">
           <Loader2Icon className="animate-spin" size={32} />
         </div>
       )}
-      <div>
-        <ul className={styles['pokemon-list']} ref={listRef}>
+      {pokemons && (
+        <ul className={clsx(styles['pokemon-list'], 'grow')} ref={listRef}>
           {pokemons?.map((pokemon) => (
             <PokemonListItem
               key={pokemon.displayName}
@@ -85,18 +87,18 @@ export const PokemonList = () => {
             />
           ))}
         </ul>
-      </div>
+      )}
       <Pagination />
     </>
   );
 };
 
 const Pagination = () => {
-  const { previous, next } = route.useLoaderData();
+  const { previous, next, count } = route.useLoaderData();
   const { page } = route.useSearch();
 
   return (
-    <div className="flex justify-between py-2">
+    <div className="flex items-center justify-between py-2">
       <Link
         to="."
         search={{ page: page - 1 }}
@@ -109,6 +111,9 @@ const Pagination = () => {
           className="stroke-slate-800 group-data-[disabled=true]:stroke-slate-400"
         />
       </Link>
+      <span>
+        {page}/{Math.ceil(count / ITEM_COUNT_PER_PAGE)}
+      </span>
       <Link
         to="."
         search={{ page: page + 1 }}

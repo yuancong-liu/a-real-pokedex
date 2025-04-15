@@ -7,9 +7,12 @@ import { createFileRoute, getRouteApi } from '@tanstack/react-router';
 import { PokeAPI } from 'pokeapi-types';
 import { Forms } from '@/components/featured/forms/forms';
 import { Image } from '@/components/common/image';
-import { getPokemonNameArray } from '@/utils/getPokemonNameArray';
+import { getPokemonName, getPokemonNameArray } from '@/utils/getPokemonName';
 import { PokemonTypeIcon } from '@/components/featured/PokemonTypeIcon';
 import { PokemonType } from '@/types/pokemonType';
+import { PokemonId } from '@/components/featured/PokemonId';
+import clsx from 'clsx';
+import { ChevronDownIcon } from 'lucide-react';
 
 const route = getRouteApi('/pokemon/$pokemonId');
 
@@ -53,23 +56,41 @@ const PokemonDetail = () => {
   const currentPokemonData = pokemons?.find((p) => p.name === currentPokemon);
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       <section className="relative flex flex-col">
-        <span className="absolute -top-10 -left-10 -z-10 text-8xl font-semibold text-slate-300">
-          #{id}
-        </span>
-        <span>{getPokemonNameArray(names).join('/')}</span>
-        <Select
-          value={currentPokemon}
-          onChange={handleSelectChange}
-          disabled={varieties.length === 1}
-        >
-          {varieties.map((v) => (
-            <option value={v.pokemon.name} key={v.pokemon.name}>
-              {v.pokemon.name}
-            </option>
-          ))}
-        </Select>
+        <div className="absolute top-0 -left-10 -z-10">
+          <PokemonId id={id} />
+        </div>
+        <h1 className="text-4xl font-bold text-slate-900">
+          {getPokemonName(names)}
+        </h1>
+        <span className="text-sm">{getPokemonNameArray(names).join('/')}</span>
+      </section>
+
+      <section className="flex flex-col gap-2">
+        <div className="relative">
+          <Select
+            className={clsx(
+              'block w-full appearance-none p-2',
+              'border-b border-slate-200',
+              'focus:outline-none data-[focus]:outline-2 data-[focus]:outline-offset-2 data-[focus]:outline-white/25',
+            )}
+            value={currentPokemon}
+            onChange={handleSelectChange}
+            disabled={varieties.length <= 1}
+          >
+            {varieties.map((v) => (
+              <option value={v.pokemon.name} key={v.pokemon.name}>
+                {v.pokemon.name}
+              </option>
+            ))}
+          </Select>
+          <ChevronDownIcon
+            className="pointer-events-none absolute top-3.5 right-2.5 size-4 fill-white/60"
+            size={16}
+            aria-hidden="true"
+          />
+        </div>
 
         {currentPokemonData && (
           <>
@@ -108,7 +129,7 @@ const PokemonDetail = () => {
       </section>
       {!!evoChain?.chain.evolves_to.length && (
         <section>
-          <h2>Evolution Chain</h2>
+          <h2 className="text-2xl font-semibold text-slate-600">Evo Chain</h2>
           <EvoChain evoChain={evoChain.chain} />
         </section>
       )}

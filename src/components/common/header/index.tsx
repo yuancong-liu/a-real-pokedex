@@ -7,7 +7,7 @@ export const Header = () => {
 
   return (
     <div className="sticky top-0 z-50 p-2">
-      <div className="mx-auto flex max-w-[50rem] gap-2 rounded-full border-b border-b-white/40 bg-white/40 px-8 py-4 backdrop-blur-lg">
+      <header className="mx-auto flex max-w-[50rem] gap-2 rounded-full border-b border-b-white/40 bg-white/40 px-8 py-4 backdrop-blur-lg">
         <Link
           to="/"
           search={{ page: 1 }}
@@ -21,7 +21,7 @@ export const Header = () => {
             Pokédex
           </span>
         </Link>
-      </div>
+      </header>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { Image } from '@/components/common/image';
 import { getTargetResponse } from '@/queries/pokemon';
-import { getPokemonFormName } from '@/utils/getPokemonNameArray';
+import { getPokemonFormName } from '@/utils/getPokemonName';
 import { useQuery } from '@tanstack/react-query';
 import { PokeAPI } from 'pokeapi-types';
 
