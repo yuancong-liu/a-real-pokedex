@@ -5,6 +5,7 @@ import { Image } from '@/components/common/image';
 import { Link } from '@tanstack/react-router';
 import { ArrowRightIcon } from 'lucide-react';
 import clsx from 'clsx';
+import { getPokemonName } from '@/utils/getPokemonName';
 
 type EvoChainProps = {
   evoChain: PokeAPI.ChainLink;
@@ -23,17 +24,19 @@ export const EvoChain = ({
       getTargetResponse<PokeAPI.PokemonSpecies>({
         path: evoChain.species.url,
       }).then(async (speciesData) => {
+        const displayName = getPokemonName(speciesData.names);
         const defaultVarietyUrl = speciesData.varieties.find(
           (variety) => variety.is_default,
         )?.pokemon.url;
         if (!defaultVarietyUrl) {
-          return { imgSrc: '', id: speciesData.id };
+          return { imgSrc: '', id: speciesData.id, name: displayName };
         }
         return await getTargetResponse<PokeAPI.Pokemon>({
           path: defaultVarietyUrl,
         }).then((pokemonData) => ({
           imgSrc: pokemonData.sprites.front_default,
           id: speciesData.id,
+          name: displayName,
         }));
       }),
   });
@@ -48,19 +51,14 @@ export const EvoChain = ({
         params={{ pokemonId: evoChain.species.name }}
         className="flex flex-col items-center"
       >
-        <Image
-          width={96}
-          height={96}
-          src={data?.imgSrc}
-          alt={evoChain.species.name}
-        />
+        <Image width={96} height={96} src={data?.imgSrc} alt={data?.name} />
         <span
           className={clsx(
             currentPokemonId === data?.id &&
               'font-bold underline underline-offset-4',
           )}
         >
-          {evoChain.species.name}
+          {data?.name}
         </span>
       </Link>
       {evoChain.evolves_to.length > 0 && (
