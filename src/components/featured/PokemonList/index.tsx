@@ -10,6 +10,7 @@ import { animate, createScope, createSpring, Scope, stagger } from 'animejs';
 import { ChevronRightIcon, ChevronLeftIcon, Loader2Icon } from 'lucide-react';
 import { ITEM_COUNT_PER_PAGE } from '@/utils/consts';
 import clsx from 'clsx';
+import { PokemonQuickAccess } from '../PokemonQuickAccess';
 
 const route = getRouteApi('/');
 
@@ -70,6 +71,7 @@ export const PokemonList = () => {
 
   return (
     <>
+      <PokemonQuickAccess />
       <Pagination />
       {isLoading && (
         <div className="grid h-full w-full grow place-items-center">

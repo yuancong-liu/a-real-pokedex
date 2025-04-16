@@ -11,4 +11,6 @@
   text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  @apply text-slate-800;
 }

@@ -68,29 +68,31 @@ const PokemonDetail = () => {
       </section>
 
       <section className="flex flex-col gap-2">
-        <div className="relative">
-          <Select
-            className={clsx(
-              'block w-full appearance-none p-2',
-              'border-b border-slate-200',
-              'focus:outline-none data-[focus]:outline-2 data-[focus]:outline-offset-2 data-[focus]:outline-white/25',
-            )}
-            value={currentPokemon}
-            onChange={handleSelectChange}
-            disabled={varieties.length <= 1}
-          >
-            {varieties.map((v) => (
-              <option value={v.pokemon.name} key={v.pokemon.name}>
-                {v.pokemon.name}
-              </option>
-            ))}
-          </Select>
-          <ChevronDownIcon
-            className="pointer-events-none absolute top-3.5 right-2.5 size-4 fill-white/60"
-            size={16}
-            aria-hidden="true"
-          />
-        </div>
+        {varieties.length > 1 && (
+          <div className="relative">
+            <Select
+              className={clsx(
+                'block w-full appearance-none p-2',
+                'border-b border-slate-200',
+                'focus:outline-none data-[focus]:outline-2 data-[focus]:outline-offset-2 data-[focus]:outline-white/25',
+              )}
+              value={currentPokemon}
+              onChange={handleSelectChange}
+              disabled={varieties.length <= 1}
+            >
+              {varieties.map((v) => (
+                <option value={v.pokemon.name} key={v.pokemon.name}>
+                  {v.pokemon.name}
+                </option>
+              ))}
+            </Select>
+            <ChevronDownIcon
+              className="pointer-events-none absolute top-3.5 right-2.5 size-4 fill-white/60"
+              size={16}
+              aria-hidden="true"
+            />
+          </div>
+        )}
 
         {currentPokemonData && (
           <>
@@ -130,7 +132,9 @@ const PokemonDetail = () => {
       {!!evoChain?.chain.evolves_to.length && (
         <section>
           <h2 className="text-2xl font-semibold text-slate-600">Evo Chain</h2>
-          <EvoChain evoChain={evoChain.chain} />
+          <div className="grid place-items-center overflow-auto pb-4">
+            <EvoChain evoChain={evoChain.chain} currentPokemonId={id} />
+          </div>
         </section>
       )}
     </div>

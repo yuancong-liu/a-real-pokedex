@@ -15,9 +15,6 @@ export const getTargetResponse = async <T>({
   return await axiosInstance.get<T>(path, { params }).then((res) => res.data);
 };
 
-export const getPokemon = (name: string) =>
-  getTargetResponse<PokeAPI.Pokemon>({ path: `/pokemon/${name}` });
-
 export const getPokemonList = (offset: number) =>
   getTargetResponse<PokeAPI.NamedAPIResourceList>({
     path: `/pokemon-species`,
@@ -30,11 +27,5 @@ export const getPokemonList = (offset: number) =>
 export const getPokemonSpecies = async (name: string) => {
   return await axiosInstance
     .get<PokeAPI.PokemonSpecies>(`/pokemon-species/${name}`)
-    .then((res) => res.data);
-};
-
-export const getPokemonEvolutionChain = async (id: number) => {
-  return await axiosInstance
-    .get<PokeAPI.EvolutionChain>(`/evolution-chain/${id}`)
     .then((res) => res.data);
 };
