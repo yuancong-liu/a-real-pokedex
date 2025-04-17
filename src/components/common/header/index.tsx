@@ -12,7 +12,7 @@ export const Header = () => {
           to="/"
           search={{ page: 1 }}
           className={clsx(
-            'grid grid-cols-[auto_0fr] items-center justify-start transition-all [.-active]:grid-cols-[auto_1fr]',
+            'grid grid-cols-[auto_0fr] items-center justify-start transition-all hover:grid-cols-[auto_1fr] [.-active]:grid-cols-[auto_1fr]',
             isRootActive && '-active',
           )}
         >

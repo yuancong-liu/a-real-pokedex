@@ -7,7 +7,7 @@ type ImageProps = ComponentProps<'img'>;
 
 export const Image = ({ className, ...props }: ImageProps) => {
   const [loaded, setLoaded] = useState(false);
-  const { width, height } = props;
+  const { width, height, src } = props;
 
   return (
     <div
@@ -21,13 +21,23 @@ export const Image = ({ className, ...props }: ImageProps) => {
           : {}
       }
     >
-      <img
-        className={clsx(styles['image'], loaded && styles['-loaded'])}
-        width={width}
-        height={height}
-        {...props}
-        onLoad={() => setLoaded(true)}
-      />
+      {!src && (
+        <div className="grid h-full w-full place-items-center">
+          <span className="text-xs font-semibold text-slate-600">
+            NO IMAGE!
+          </span>
+        </div>
+      )}
+      {!!src && (
+        <img
+          className={clsx(styles['image'], loaded && styles['-loaded'])}
+          width={width}
+          height={height}
+          src={src}
+          {...props}
+          onLoad={() => setLoaded(true)}
+        />
+      )}
     </div>
   );
 };
