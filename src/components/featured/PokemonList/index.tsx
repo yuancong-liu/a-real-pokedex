@@ -11,13 +11,19 @@ import { ChevronRightIcon, ChevronLeftIcon, Loader2Icon } from 'lucide-react';
 import { ITEM_COUNT_PER_PAGE } from '@/utils/consts';
 import clsx from 'clsx';
 import { PokemonQuickAccess } from '../PokemonQuickAccess';
+import { Button } from '@headlessui/react';
 
 const route = getRouteApi('/');
 
 export const PokemonList = () => {
   const { results } = route.useLoaderData();
 
-  const { data: pokemons, isLoading } = useQuery({
+  const {
+    data: pokemons,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ['pokemonVarieties', results],
     queryFn: () => {
       const promises = results.map(
@@ -73,6 +79,12 @@ export const PokemonList = () => {
     <>
       <PokemonQuickAccess />
       <Pagination />
+      {isError && (
+        <div className="grid h-full w-full grow place-items-center">
+          Something went wrong!
+          <Button onClick={() => refetch()}>RETRY</Button>
+        </div>
+      )}
       {isLoading && (
         <div className="grid h-full w-full grow place-items-center">
           <Loader2Icon className="animate-spin" size={32} />
