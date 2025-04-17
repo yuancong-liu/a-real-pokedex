@@ -7,7 +7,12 @@ import { getPokemonSpecies, getTargetResponse } from '@/queries/pokemon';
 import { PokeAPI } from 'pokeapi-types';
 import { useEffect, useRef } from 'react';
 import { animate, createScope, createSpring, Scope, stagger } from 'animejs';
-import { ChevronRightIcon, ChevronLeftIcon, Loader2Icon } from 'lucide-react';
+import {
+  ChevronRightIcon,
+  ChevronLeftIcon,
+  Loader2Icon,
+  RotateCcwIcon,
+} from 'lucide-react';
 import { ITEM_COUNT_PER_PAGE } from '@/utils/consts';
 import clsx from 'clsx';
 import { PokemonQuickAccess } from '../PokemonQuickAccess';
@@ -77,17 +82,27 @@ export const PokemonList = () => {
 
   return (
     <>
-      <PokemonQuickAccess />
+      <div className="pb-2">
+        <PokemonQuickAccess />
+      </div>
       <Pagination />
       {isError && (
-        <div className="grid h-full w-full grow place-items-center">
-          Something went wrong!
-          <Button onClick={() => refetch()}>RETRY</Button>
+        <div className="flex h-full w-full grow flex-col items-center justify-center gap-4">
+          <span className="font-semibold text-red-500">
+            OOPS! Something went wrong!
+          </span>
+          <Button
+            className="flex items-center gap-2 rounded-full bg-red-500 px-4 py-2 text-white underline-offset-4 transition-colors hover:bg-red-400 hover:underline"
+            onClick={() => refetch()}
+          >
+            <RotateCcwIcon size={16} className="text-white" />
+            <span>RETRY</span>
+          </Button>
         </div>
       )}
       {isLoading && (
         <div className="grid h-full w-full grow place-items-center">
-          <Loader2Icon className="animate-spin" size={32} />
+          <Loader2Icon className="animate-spin text-slate-600" size={32} />
         </div>
       )}
       {pokemons && (

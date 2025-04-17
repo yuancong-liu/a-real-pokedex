@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { PokeAPI } from 'pokeapi-types';
 import { Image } from '@/components/common/image';
 import { Link } from '@tanstack/react-router';
-import { ArrowRightIcon } from 'lucide-react';
+import { ArrowRightIcon, Loader2Icon } from 'lucide-react';
 import clsx from 'clsx';
 import { getPokemonName } from '@/utils/getPokemonName';
 
@@ -18,7 +18,7 @@ export const EvoChain = ({
   shouldShowArrow,
   currentPokemonId,
 }: EvoChainProps) => {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['species', evoChain.species.url],
     queryFn: () =>
       getTargetResponse<PokeAPI.PokemonSpecies>({
@@ -51,15 +51,24 @@ export const EvoChain = ({
         params={{ pokemonId: evoChain.species.name }}
         className="flex flex-col items-center"
       >
-        <Image width={96} height={96} src={data?.imgSrc} alt={data?.name} />
-        <span
-          className={clsx(
-            currentPokemonId === data?.id &&
-              'font-bold underline underline-offset-4',
-          )}
-        >
-          {data?.name}
-        </span>
+        {isLoading && (
+          <div className="grid h-30 w-24 grow place-items-center">
+            <Loader2Icon className="animate-spin text-slate-600" size={32} />
+          </div>
+        )}
+        {data && (
+          <>
+            <Image width={96} height={96} src={data?.imgSrc} alt={data?.name} />
+            <span
+              className={clsx(
+                currentPokemonId === data?.id &&
+                  'font-bold underline underline-offset-4',
+              )}
+            >
+              {data?.name}
+            </span>
+          </>
+        )}
       </Link>
       {evoChain.evolves_to.length > 0 && (
         <div className="flex flex-col gap-2">
