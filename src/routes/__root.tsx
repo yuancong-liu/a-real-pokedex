@@ -9,7 +9,7 @@ export const Route = createRootRoute({
     const router = useRouter();
 
     return (
-      <div className="flex min-h-screen flex-col">
+      <div className="flex min-h-dvh flex-col">
         <Header />
         <main className="mx-auto grid min-h-full w-full max-w-[50rem] grow place-items-center px-4 pb-4">
           <div className="flex flex-col items-center gap-2">
@@ -34,7 +34,7 @@ export const Route = createRootRoute({
     );
   },
   component: () => (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-dvh flex-col">
       <Header />
       <main className="mx-auto flex min-h-full w-full max-w-[50rem] grow flex-col px-4 pb-4">
         <Outlet />
