@@ -1,6 +1,6 @@
 import { axiosInstance } from '@/utils/axios';
 import { ITEM_COUNT_PER_PAGE } from '@/utils/consts';
-import type { AxiosRequestConfig } from 'axios';
+import { AxiosError, type AxiosRequestConfig } from 'axios';
 import type { PokeAPI } from 'pokeapi-types';
 
 type TargetResponseOptions = {

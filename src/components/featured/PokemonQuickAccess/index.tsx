@@ -18,14 +18,17 @@ export const PokemonQuickAccess = () => {
       getPokemonSpecies(query).then((res) => {
         const engName = getPokemonName(res.names);
         const target = res.varieties.find((v) => v.is_default)?.pokemon.url;
+
         if (!target) {
           return { imgSrc: '', name: engName, id: res.id };
         }
+
         const imgSrc = getTargetResponse<PokeAPI.Pokemon>({
           path: target,
         }).then((pokemon) => ({
           imgSrc: pokemon.sprites.front_default,
         }));
+
         return imgSrc.then((img) => ({
           imgSrc: img.imgSrc,
           name: engName,

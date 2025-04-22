@@ -1,9 +1,14 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { Select } from '@headlessui/react';
+import { Button, Select } from '@headlessui/react';
 import { EvoChain } from '@/components/featured/EvoChain';
 import { getPokemonSpecies, getTargetResponse } from '@/queries/pokemon';
 import { useQuery } from '@tanstack/react-query';
-import { createFileRoute, getRouteApi } from '@tanstack/react-router';
+import {
+  createFileRoute,
+  getRouteApi,
+  notFound,
+  useRouter,
+} from '@tanstack/react-router';
 import { PokeAPI } from 'pokeapi-types';
 import { Forms } from '@/components/featured/forms/forms';
 import { Image } from '@/components/common/image';
@@ -12,7 +17,7 @@ import { PokemonTypeIcon } from '@/components/featured/PokemonTypeIcon';
 import { PokemonType } from '@/types/pokemonType';
 import { PokemonId } from '@/components/featured/PokemonId';
 import clsx from 'clsx';
-import { ChevronDownIcon } from 'lucide-react';
+import { ArrowLeftIcon, ChevronDownIcon } from 'lucide-react';
 
 const route = getRouteApi('/pokemon/$pokemonId');
 
@@ -141,10 +146,52 @@ const PokemonDetail = () => {
   );
 };
 
+const NotFound = () => {
+  const router = useRouter();
+
+  return (
+    <div className="flex grow flex-col">
+      <section className="relative grid h-full grow flex-col place-items-center">
+        <div className="absolute top-0 -left-10 -z-10">
+          <PokemonId />
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          <h1 className="text-3xl font-bold text-slate-900">
+            No Such Pokémon!
+          </h1>
+          <Button
+            className="group flex items-center gap-2 rounded-full bg-cyan-500 px-4 py-2 text-white underline-offset-4 transition-colors hover:bg-cyan-400 hover:underline"
+            onClick={() =>
+              router.navigate({
+                to: '/',
+                search: { page: 1 },
+              })
+            }
+          >
+            <ArrowLeftIcon
+              size={16}
+              className="text-white transition-all group-data-hover:animate-ping"
+            />
+            <span>BACK TO THE LIST</span>
+          </Button>
+        </div>
+      </section>
+    </div>
+  );
+};
+
 export const Route = createFileRoute('/pokemon/$pokemonId')({
   component: PokemonDetail,
+  notFoundComponent: NotFound,
   loader: async ({ params }): Promise<PokeAPI.PokemonSpecies> => {
     const { pokemonId } = params;
-    return getPokemonSpecies(pokemonId);
+    return await getPokemonSpecies(pokemonId)
+      .then((res) => res)
+      .catch((err) => {
+        if (err.response?.status === 404) {
+          throw notFound();
+        }
+        throw err;
+      });
   },
 });

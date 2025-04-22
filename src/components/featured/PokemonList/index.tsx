@@ -15,8 +15,8 @@ import {
 } from 'lucide-react';
 import { ITEM_COUNT_PER_PAGE } from '@/utils/consts';
 import clsx from 'clsx';
-import { PokemonQuickAccess } from '../PokemonQuickAccess';
 import { Button } from '@headlessui/react';
+import { AxiosError } from 'axios';
 
 const route = getRouteApi('/');
 
@@ -30,7 +30,10 @@ export const PokemonList = () => {
     refetch,
   } = useQuery({
     queryKey: ['pokemonVarieties', results],
-    queryFn: () => {
+    retry: (count, error: AxiosError) => {
+      return error.status !== 404 || count < 3;
+    },
+    queryFn: async () => {
       const promises = results.map(
         async (result) =>
           await getPokemonSpecies(result.name).then(async (speciesData) => {
@@ -57,7 +60,7 @@ export const PokemonList = () => {
             return { id: speciesData.id, displayName, imgSrc };
           }),
       );
-      return Promise.all(promises);
+      return await Promise.all(promises);
     },
   });
 
@@ -82,9 +85,6 @@ export const PokemonList = () => {
 
   return (
     <>
-      <div className="pb-2">
-        <PokemonQuickAccess />
-      </div>
       <Pagination />
       {isError && (
         <div className="flex h-full w-full grow flex-col items-center justify-center gap-4">
